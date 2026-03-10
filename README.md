@@ -1,2 +1,2 @@
 # R-project
-Testing GitHub connection.
+Testing GitHub connection
