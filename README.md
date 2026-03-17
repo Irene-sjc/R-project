@@ -52,11 +52,12 @@ This project used ChatGPT to assist with debugging and improving R code. All ana
 ---
 
 ## References
-CDC PLACES Dataset (2025 Release)  
-https://data.cdc.gov/  
+Centers for Disease Control and Prevention (CDC). PLACES: Local Data for Better Health, County Data (2025 Release).  
+https://data.cdc.gov/500-Cities-Places/PLACES-Local-Data-for-Better-Health-County-Data-20/swc5-untb/about_data  
 
-World Health Organization. Physical Activity (2024)  
+World Health Organization. Physical activity. 2024.  
+https://www.who.int/news-room/fact-sheets/detail/physical-activity
 
-Silveira EA et al. (2022). Sedentary behavior and obesity  
+Silveira EA, Mendonça CR, Delpino FM, et al. Sedentary behavior, physical inactivity, abdominal obesity and obesity in adults and older adults: A systematic review and meta-analysis. Clin Nutr ESPEN. 2022;50:63-73. doi:10.1016/j.clnesp.2022.06.001
 
-Pietiläinen KH et al. (2007). Physical inactivity and obesity  
+Pietiläinen KH, Kaprio J, Borg P, et al. Physical inactivity and obesity: a vicious circle. Obesity (Silver Spring). 2008;16(2):409-414. doi:10.1038/oby.2007.72
