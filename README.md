@@ -1,23 +1,23 @@
-#📓 County-Level Analysis of Obesity and Physical Inactivity in the United States
+# 📓 County-Level Analysis of Obesity and Physical Inactivity in the United States
 
-##📝 Project Description
+## 📝 Project Description
 This project analyzes county-level health data from the CDC PLACES dataset to explore patterns and relationships in adult obesity prevalence across the United States. The project combines exploratory data analysis, comparative analysis, and simulation to better understand how behavioral risk factors, such as physical inactivity, are associated with obesity.
 
 ---
 
-##🙋🏻‍♀️ Author and Affiliation
+## 🙋🏻‍♀️ Author and Affiliation
 Jinchan Sun  
 Cornell University  
 Master of Public Health (MPH), Food Systems and Health  
 
 ---
 
-##📪 Contact Information
+## 📪 Contact Information
 Email: js3875@cornell.edu  
 
 ---
 
-##🎯 Research Questions / Objectives
+## 🎯 Research Questions / Objectives
 - What is the distribution of adult obesity prevalence across U.S. counties?  
 - Is obesity prevalence associated with county population size?  
 - Is there an association between physical inactivity and obesity at the county level?  
@@ -25,7 +25,7 @@ Email: js3875@cornell.edu
 
 ---
 
-##📊 Data Source and Description
+## 📊 Data Source and Description
 The dataset used in this project is:
 
 CDC PLACES: Local Data for Better Health, County Data (2025 Release)  
@@ -35,7 +35,7 @@ This dataset provides model-based estimates of health outcomes, prevention measu
 
 ---
 
-##📚 Links to Reports or Deliverables
+## 📚 Links to Reports or Deliverables
 This repository includes:
 - Data exploration and visualization scripts  
 - Comparative analysis results  
@@ -46,12 +46,12 @@ This repository includes:
 
 ---
 
-##🖥️ AI Tool Disclosure
+## 🖥️ AI Tool Disclosure
 This project used ChatGPT to assist with debugging and improving R code. All analytical decisions, interpretations, and final outputs were completed by the author.
 
 ---
 
-##📖 References
+## 📖 References
 Centers for Disease Control and Prevention (CDC). PLACES: Local Data for Better Health, County Data (2025 Release).  
 https://data.cdc.gov/500-Cities-Places/PLACES-Local-Data-for-Better-Health-County-Data-20/swc5-untb/about_data  
 
