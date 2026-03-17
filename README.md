@@ -58,6 +58,6 @@ https://data.cdc.gov/500-Cities-Places/PLACES-Local-Data-for-Better-Health-Count
 World Health Organization. Physical activity. 2024.  
 https://www.who.int/news-room/fact-sheets/detail/physical-activity
 
-Silveira EA, Mendonça CR, Delpino FM, et al. Sedentary behavior, physical inactivity, abdominal obesity and obesity in adults and older adults: A systematic review and meta-analysis. Clin Nutr ESPEN. 2022;50:63-73. doi:10.1016/j.clnesp.2022.06.001
+Silveira EA, Mendonça CR, Delpino FM, et al. Sedentary behavior, physical inactivity, abdominal obesity and obesity in adults and older adults: A systematic review and meta-analysis. Clin Nutr ESPEN. 2022;50:63-73. https://10.1016/j.clnesp.2022.06.001
 
-Pietiläinen KH, Kaprio J, Borg P, et al. Physical inactivity and obesity: a vicious circle. Obesity (Silver Spring). 2008;16(2):409-414. doi:10.1038/oby.2007.72
+Pietiläinen KH, Kaprio J, Borg P, et al. Physical inactivity and obesity: a vicious circle. Obesity (Silver Spring). 2008;16(2):409-414. https://10.1038/oby.2007.72
