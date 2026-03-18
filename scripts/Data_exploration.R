@@ -5,7 +5,7 @@
 library(ggplot2)
 
 # Load data (USE RELATIVE PATH)
-places_raw <- read.csv("data/raw/PLACES_sample.csv.csv", stringsAsFactors = FALSE)
+places_raw <- read.csv("data/raw/PLACES_sample.csv", stringsAsFactors = FALSE)
 
 # Check structure
 head(places_raw)
