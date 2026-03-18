@@ -7,7 +7,7 @@ library(dplyr)
 library(tidyr)
 
 # Load data
-data <- read.csv("data/raw/PLACES__Local_Data_for_Better_Health,_County_Data,_2025_release_20260203.csv")
+data <- read.csv("data/raw/PLACES_sample.csv")
 
 # Clean
 data_clean <- data %>%
