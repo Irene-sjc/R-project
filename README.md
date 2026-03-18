@@ -44,6 +44,17 @@ This repository includes:
 
 (All results are contained within this repository.)
 
+###  Reports
+
+- **CP02 – Exploratory Data Analysis**  
+  [View Report](./output/reports/CP02_report.pdf)
+
+- **CP03 – Comparative Analysis**  
+  [View Report](./output/reports/CP03_report.pdf)
+
+- **CP04 – Simulation Study**  
+  [View Report](./output/reports/CP04_report.pdf)
+
 ---
 
 ## 🖥️ AI Tool Disclosure
