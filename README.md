@@ -35,6 +35,16 @@ This dataset provides model-based estimates of health outcomes, prevention measu
 
 ---
 
+## ⚠️ Data and Reproducibility Note
+
+Due to file size limitations, a subset of the original dataset is included in this repository for reproducibility purposes.
+
+The reports provided in this repository (CP02–CP04) were generated using the full dataset. As a result, figures and summary statistics may differ slightly when running the analysis using the sample dataset included here.
+
+The sample dataset preserves the structure and variables of the original data while reducing file size for practical use.
+
+---
+
 ## 📚 Links to Reports or Deliverables
 This repository includes:
 - Data exploration and visualization scripts  
@@ -44,7 +54,7 @@ This repository includes:
 
 (All results are contained within this repository.)
 
-###  Reports
+### 📑 Reports
 
 - **CP02 – Exploratory Data Analysis**  
   [View Report](./output/reports/CP02_report.pdf)
