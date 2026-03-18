@@ -6,7 +6,7 @@ library(ggplot2)
 library(dplyr)
 
 # Load data
-places <- read.csv("data/raw/PLACES__Local_Data_for_Better_Health,_County_Data,_2025_release_20260203.csv")
+places <- read.csv("data/raw/PLACES_sample.csv")
 
 # Filter variables
 data_filtered <- places %>%
