@@ -47,7 +47,7 @@ To maintain clarity and reproducibility, only one consistent set of figures (gen
 
 ---
 
-## 📚 Links to Reports or Deliverables
+## 🔗 Links to Reports or Deliverables
 This repository includes:
 - Data exploration and visualization scripts  
 - Comparative analysis results  
