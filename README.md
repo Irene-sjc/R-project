@@ -37,11 +37,13 @@ This dataset provides model-based estimates of health outcomes, prevention measu
 
 ## ⚠️ Data and Reproducibility Note
 
-Due to file size limitations, a subset of the original dataset is included in this repository for reproducibility purposes.
+Due to file size limitations, this repository includes a reduced sample of the original dataset (`data/raw/PLACES_sample.csv`) to ensure reproducibility.
 
-The reports provided in this repository (CP02–CP04) were generated using the full dataset. As a result, figures and summary statistics may differ slightly when running the analysis using the sample dataset included here.
+All analysis scripts (`.R` files) and figures stored in the `output/` directory are generated using this sample dataset. This allows the code to run successfully on any machine and ensures that the results can be fully reproduced.
 
-The sample dataset preserves the structure and variables of the original data while reducing file size for practical use.
+The PDF reports (CP02–CP04), also stored in the `output/` directory, were generated using the full dataset, which is not included in this repository due to its large size. Therefore, numerical results and visualizations in the reports may differ slightly from those produced by running the scripts with the sample dataset.
+
+To maintain clarity and reproducibility, only one consistent set of figures (generated from the sample dataset) is included in the `output/` folder.
 
 ---
 
