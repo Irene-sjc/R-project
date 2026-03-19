@@ -88,3 +88,11 @@ ggplot(data_clean, aes(x = Inactivity, y = Obesity)) +
     y = "Obesity (%)"
   ) +
   theme_minimal()
+
+# =====================
+# Save Figures
+# =====================
+
+ggsave("output/cp03_boxplot.png", width = 6, height = 4)
+
+ggsave("output/cp03_scatterplot.png", width = 6, height = 4)
