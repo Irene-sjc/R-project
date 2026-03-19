@@ -67,6 +67,29 @@ This repository includes:
 - **CP04 – Simulation Study**  
   [View Report](./output/reports/CP04_report.pdf)
 
+## 📊 Figures
+
+- **CP02 – Histogram of Obesity Prevalence**  
+  [View Figure](output/cp02_histogram.png)
+
+- **CP02 – Obesity vs Population Scatterplot**  
+  [View Figure](output/cp02_scatterplot.png)
+
+- **CP03 – Obesity by Inactivity (Boxplot)**  
+  [View Figure](output/cp03_boxplot.png)
+
+- **CP03 – Inactivity vs Obesity Scatterplot**  
+  [View Figure](output/cp03_scatterplot.png)
+
+- **CP04 – Simulation Scatterplot**  
+  [View Figure](output/cp04_scatterplot.png)
+
+- **CP04 – Residual Plot**  
+  [View Figure](output/cp04_residuals.png)
+
+- **CP04 – Heatmap of Simulation Results**  
+  [View Figure](output/cp04_heatmap.png)
+  
 ---
 
 ## 🖥️ AI Tool Disclosure
