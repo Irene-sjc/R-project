@@ -29,7 +29,7 @@ data_wide <- reshape(data_filtered,
                      timevar = "Measure",
                      direction = "wide")
 
-# Rename columns（避免出错）
+# Rename columns
 colnames(data_wide) <- c("State", "County", "Obesity", "Inactivity")
 
 # =====================
