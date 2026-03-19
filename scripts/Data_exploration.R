@@ -102,3 +102,10 @@ ggplot(scatter_data, aes(x = TotalPopulation, y = Data_Value)) +
     caption = "Scatterplot of county-level estimates from CDC PLACES."
   ) +
   theme_classic()
+
+# =====================
+# Save figures
+# =====================
+
+ggsave("output/cp02_histogram.png", width = 6, height = 4)
+ggsave("output/cp02_scatterplot.png", width = 6, height = 4)
