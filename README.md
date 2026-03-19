@@ -70,25 +70,25 @@ This repository includes:
 ## 📊 Figures
 
 - **CP02 – Histogram of Obesity Prevalence**  
-  [View Figure](output/cp02_histogram.png)
+  [View Figure](output/figures/cp02_histogram.png)
 
 - **CP02 – Obesity vs Population Scatterplot**  
-  [View Figure](output/cp02_scatterplot.png)
+  [View Figure](output/figures/cp02_scatterplot.png)
 
 - **CP03 – Obesity by Inactivity (Boxplot)**  
-  [View Figure](output/cp03_boxplot.png)
+  [View Figure](output/figures/cp03_boxplot.png)
 
 - **CP03 – Inactivity vs Obesity Scatterplot**  
-  [View Figure](output/cp03_scatterplot.png)
+  [View Figure](output/figures/cp03_scatterplot.png)
 
 - **CP04 – Simulation Scatterplot**  
-  [View Figure](output/cp04_scatterplot.png)
+  [View Figure](output/figures/cp04_scatterplot.png)
 
 - **CP04 – Residual Plot**  
-  [View Figure](output/cp04_residuals.png)
+  [View Figure](output/figures/cp04_residuals.png)
 
 - **CP04 – Heatmap of Simulation Results**  
-  [View Figure](output/cp04_heatmap.png)
+  [View Figure](output/figures/cp04_heatmap.png)
   
 ---
 
