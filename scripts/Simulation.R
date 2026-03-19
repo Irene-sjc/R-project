@@ -53,6 +53,8 @@ ggplot(selected, aes(x = Physical_Inactivity, y = Obesity)) +
   ) +
   theme_minimal()
 
+ggsave("output/cp04_scatterplot.png", width = 6, height = 4)
+
 # =====================
 # Residual Plot
 # =====================
@@ -71,6 +73,8 @@ ggplot(data.frame(
     y = "Residuals"
   ) +
   theme_minimal()
+
+ggsave("output/cp04_residuals.png", width = 6, height = 4)
 
 # =====================
 # Simulation Example
@@ -225,10 +229,4 @@ ggplot(combined_summary,
   scale_fill_gradient(low = "white", high = "darkred") +
   theme_minimal()
 
-# =====================
-# Save Figures
-# =====================
-
-ggsave("output/cp04_scatterplot.png", width = 6, height = 4)
-ggsave("output/cp04_residuals.png", width = 6, height = 4)
 ggsave("output/cp04_heatmap.png", width = 7, height = 5)
