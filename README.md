@@ -25,7 +25,7 @@ Email: js3875@cornell.edu
 
 ---
 
-## 📊 Data Source and Description
+## 📚 Data Source and Description
 The dataset used in this project is:
 
 CDC PLACES: Local Data for Better Health, County Data (2025 Release)  
