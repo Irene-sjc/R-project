@@ -224,3 +224,11 @@ ggplot(combined_summary,
   ) +
   scale_fill_gradient(low = "white", high = "darkred") +
   theme_minimal()
+
+# =====================
+# Save Figures
+# =====================
+
+ggsave("output/cp04_scatterplot.png", width = 6, height = 4)
+ggsave("output/cp04_residuals.png", width = 6, height = 4)
+ggsave("output/cp04_heatmap.png", width = 7, height = 5)
