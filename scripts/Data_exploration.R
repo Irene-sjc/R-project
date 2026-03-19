@@ -83,7 +83,7 @@ ggplot(obesity_data, aes(x = Data_Value)) +
   ) +
   theme_minimal()
 
-ggsave("output/cp02_histogram.png", width = 6, height = 4)
+ggsave("output/figures/cp02_histogram.png", width = 6, height = 4)
 
 # =====================
 # Scatterplot - Obesity vs Population
@@ -105,4 +105,4 @@ ggplot(scatter_data, aes(x = TotalPopulation, y = Data_Value)) +
   ) +
   theme_classic()
 
-ggsave("output/cp02_scatterplot.png", width = 6, height = 4)
+ggsave("output/figures/cp02_scatterplot.png", width = 6, height = 4)
