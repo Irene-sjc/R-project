@@ -49,7 +49,7 @@ Before analysis, the dataset was inspected and cleaned as needed. Relevant varia
 
 To examine the association between physical inactivity and adult obesity prevalence at the county level, a combination of exploratory, descriptive, and inferential statistical approaches was used.
 
-First, exploratory data analysis was conducted to understand the distribution of key variables. Histograms were used to assess the distribution of adult obesity prevalence across counties. Scatterplots were also generated to visualize relationships between obesity prevalence and other variables, including total population and physical inactivity.
+First, exploratory data analysis was conducted to understand the distribution of key variables. Scatterplots were generated to visualize relationships between obesity prevalence and other variables, including total population and physical inactivity.
 
 Next, descriptive analyses were performed to compare obesity prevalence across different levels of physical inactivity. Counties were categorized into “high” and “low” physical inactivity groups based on the median value of physical inactivity. Summary statistics, including mean, standard deviation, and median obesity prevalence, were calculated for each group. A boxplot was used to visualize differences between these groups.
 
