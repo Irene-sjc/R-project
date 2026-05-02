@@ -80,6 +80,22 @@ The app uses the sample dataset stored in the `Shiny app/` folder.
 
 ---
 
+---
+
+## 📄 Final Report
+
+The final report focuses on the relationship between adult physical inactivity and adult obesity prevalence across U.S. counties using the CDC PLACES 2025 dataset.
+
+The report uses summary statistics, boxplots, scatterplots, and a simple linear regression model to explore whether counties with higher physical inactivity prevalence also tend to have higher obesity prevalence. Model diagnostics, including residual and Q-Q plots, are also included to check regression assumptions.
+
+**Final report files:**
+
+- [R Markdown source file](./Final%20Report/VTPEH6270-Final%20Report.Rmd)
+- [Final PDF report](./Final%20Report/VTPEH6270-Final-Report.pdf)
+- [Bibliography file](./Final%20Report/references.bib)
+
+---
+
 ## 🗂️ Repository Structure
 
 ```text
@@ -136,6 +152,9 @@ This repository includes:
 
 - **CP04 – Simulation Study**  
   [View Report](./output/reports/CP04_simulation_report.pdf)
+
+- **Final Report – Obesity and Physical Inactivity Analysis**  
+  [View Report](./Final%20Report/VTPEH6270-Final-Report.pdf)
   
 ---
 
