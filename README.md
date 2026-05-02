@@ -134,7 +134,7 @@ This repository includes:
   
 ---
 
-## 🖥️ AI Tool Disclosure
+## 🤖 AI Tool Disclosure
 This project used ChatGPT to assist with debugging and improving R code. All analytical decisions, interpretations, and final outputs were completed by the author.
 
 ---
