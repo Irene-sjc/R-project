@@ -47,6 +47,38 @@ To maintain clarity and reproducibility, only one consistent set of figures (gen
 
 ---
 
+## 🗂️ Repository Structure
+
+R-project/
+│
+├── data/
+│   └── raw/
+│       └── PLACES_sample.csv
+│
+├── scripts/
+│   ├── Data_exploration.R
+│   ├── Analysis.R
+│   └── Simulation.R
+│
+├── output/
+│   ├── figures/
+│   └── reports/
+│
+├── Shiny app/
+│   ├── app.R
+│   └── PLACES_sample_shinyapp.csv
+│
+├── Check Point 06/
+│   ├── VTPEH6270-CP06.Rmd
+│   ├── VTPEH6270--CP06.pdf
+│   └── references.bib
+│
+├── README.md
+├── .gitignore
+└── R-project.Rproj
+
+---
+
 ## 🔗 Links to Reports or Deliverables
 This repository includes:
 - Data exploration and visualization scripts  
@@ -66,29 +98,6 @@ This repository includes:
 
 - **CP04 – Simulation Study**  
   [View Report](./output/reports/CP04_report.pdf)
-
-## 📊 Figures
-
-- **CP02 – Histogram of Obesity Prevalence**  
-  [View Figure](output/figures/cp02_histogram.png)
-
-- **CP02 – Obesity vs Population Scatterplot**  
-  [View Figure](output/figures/cp02_scatterplot.png)
-
-- **CP03 – Obesity by Inactivity (Boxplot)**  
-  [View Figure](output/figures/cp03_boxplot.png)
-
-- **CP03 – Inactivity vs Obesity Scatterplot**  
-  [View Figure](output/figures/cp03_scatterplot.png)
-
-- **CP04 – Simulation Scatterplot**  
-  [View Figure](output/figures/cp04_scatterplot.png)
-
-- **CP04 – Residual Plot**  
-  [View Figure](output/figures/cp04_residuals.png)
-
-- **CP04 – Heatmap of Simulation Results**  
-  [View Figure](output/figures/cp04_heatmap.png)
   
 ---
 
