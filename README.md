@@ -112,7 +112,7 @@ R-project/
 
 ---
 
-## 🔗 Links to Reports or Deliverables
+## 🔗 Links to Deliverables
 This repository includes:
 - Data exploration and visualization scripts  
 - Comparative analysis results  
