@@ -105,6 +105,11 @@ R-project/
 │   ├── VTPEH6270--CP06.pdf           # CP06 final PDF report
 │   └── references.bib                # Bibliography file
 │
+├── Final Report/
+│   ├── VTPEH6270-Final Report.Rmd    # Final report R Markdown file
+│   ├── VTPEH6270-Final-Report.pdf    # Final report PDF
+│   └── references.bib                # Bibliography file for the final report
+│
 ├── README.md                         # Project overview and usage instructions
 ├── .gitignore                        # Files excluded from Git tracking
 └── R-project.Rproj                   # RStudio project file
