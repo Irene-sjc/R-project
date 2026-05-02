@@ -47,6 +47,20 @@ To maintain clarity and reproducibility, only one consistent set of figures (gen
 
 ---
 
+## ▶️ Usage Instructions
+
+Open `R-project.Rproj` in RStudio, then run the scripts in the following order:
+
+```r
+source("scripts/Data_exploration.R")
+source("scripts/Analysis.R")
+source("scripts/Simulation.R")
+```
+
+The scripts use the sample dataset in `data/raw/` and generate outputs in `output/figures/`. Reports are stored in `output/reports/`.
+
+---
+
 ## 🗂️ Repository Structure
 
 ```text
