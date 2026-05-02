@@ -1,0 +1,515 @@
+---
+title: "County-Level Association Between Physical Inactivity and Adult Obesity in the United States"
+author: "Jinchan Sun"
+date: "2026-05-02"
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+    fig_caption: true
+    latex_engine: xelatex
+fontsize: 11pt
+geometry: margin=1in
+linkcolor: blue
+urlcolor: blue
+citecolor: blue
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 6.5,
+  fig.height = 4.5,
+  fig.align = "center"
+)
+```
+
+# Introduction
+
+Obesity is an important public health issue in the United States because it is associated with increased risk of chronic diseases, including type 2 diabetes, cardiovascular disease, and other preventable health conditions. Physical inactivity is also a major behavioral risk factor and may contribute to higher obesity prevalence at the population level.
+
+This report examines the association between adult physical inactivity and adult obesity prevalence using county-level data from the CDC PLACES 2025 dataset. The analysis focuses on county-level aggregated estimates rather than individual-level data. Therefore, the goal is to explore patterns and associations, not to make causal claims.
+
+## Research Question
+
+Is adult obesity prevalence associated with physical inactivity at the county level?
+
+## Scientific Plausibility and Hypothesis
+
+Physical inactivity is widely recognized as a major public health concern. Global health authorities identify insufficient physical activity as an important risk factor for non-communicable diseases, including obesity [@WHO2024PhysicalActivity]. A recent systematic review reported consistent evidence that sedentary behavior and low physical activity are associated with increased abdominal obesity and overall adiposity in adults [@Silveira2022Sedentary]. Earlier research has further suggested a possible vicious cycle, in which physical inactivity contributes to weight gain, and increased body weight may in turn reduce physical activity levels over time [@Pietilainen2007PhysicalInactivity].
+
+Based on existing literature, we expect that higher levels of physical inactivity will be positively associated with higher adult obesity prevalence at the county level. This analysis focuses on examining associations rather than causal relationships. County-level analysis allows us to identify geographic patterns and inform local public health interventions.
+
+# Material & Methods
+
+## Data Source
+
+The data used in this report come from the CDC PLACES 2025 dataset, which provides model-based estimates of health outcomes, prevention measures, and risk factors for U.S. counties. The original dataset is publicly available from the CDC data portal:
+
+https://data.cdc.gov/500-Cities-Places/PLACES-Local-Data-for-Better-Health-County-Data-20/swc5-untb/about_data
+
+CDC PLACES estimates are based on small-area estimation methods using data from the Behavioral Risk Factor Surveillance System and U.S. Census data. Because the full dataset is too large to include in the course repository, this report uses a reduced sample file named PLACES_sample.csv. The reduced sample was created for course reproducibility and retained the county-level observations and variables needed for this analysis. Because it is not the full CDC PLACES dataset, the findings should be interpreted as exploratory and may not perfectly represent all U.S. counties.
+
+## Data Cleaning and Preparation
+
+```{r data-cleaning, include = FALSE}
+# Load packages
+library(here)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(knitr)
+
+# Load data
+places_raw <- read.csv(
+  here("data", "raw", "PLACES_sample.csv"),
+  stringsAsFactors = FALSE
+)
+
+# Convert numeric columns safely
+to_num <- function(x) {
+  x <- trimws(as.character(x))
+  x[x %in% c("", "NA", "NaN", "NULL")] <- NA
+  suppressWarnings(as.numeric(x))
+}
+
+places_raw$Data_Value <- to_num(places_raw$Data_Value)
+places_raw$Low_Confidence_Limit <- to_num(places_raw$Low_Confidence_Limit)
+places_raw$High_Confidence_Limit <- to_num(places_raw$High_Confidence_Limit)
+places_raw$TotalPopulation <- to_num(places_raw$TotalPopulation)
+places_raw$Year <- to_num(places_raw$Year)
+
+# Keep crude prevalence estimates from 2023
+places_clean <- places_raw %>%
+  filter(
+    Data_Value_Type == "Crude prevalence",
+    Year == 2023
+  )
+
+# Select obesity and physical inactivity measures
+selected_long <- places_clean %>%
+  filter(Measure %in% c(
+    "Obesity among adults",
+    "No leisure-time physical activity among adults"
+  )) %>%
+  select(
+    StateAbbr,
+    LocationName,
+    Measure,
+    Data_Value
+  )
+
+# Convert from long format to wide format
+selected <- selected_long %>%
+  pivot_wider(
+    names_from = Measure,
+    values_from = Data_Value,
+    values_fn = mean
+  ) %>%
+  rename(
+    State = StateAbbr,
+    County = LocationName,
+    Obesity = `Obesity among adults`,
+    Physical_Inactivity = `No leisure-time physical activity among adults`
+  ) %>%
+  drop_na(Obesity, Physical_Inactivity)
+
+# Create high/low physical inactivity group using the median
+median_inactivity <- median(selected$Physical_Inactivity, na.rm = TRUE)
+
+selected <- selected %>%
+  mutate(
+    Inactivity_Group = ifelse(
+      Physical_Inactivity > median_inactivity,
+      "High Inactivity",
+      "Low Inactivity"
+    )
+  )
+
+# Final sample size
+n_counties <- nrow(selected)
+n_counties
+```
+
+Data cleaning focused on preparing the CDC PLACES sample for county-level analysis. The dataset was restricted to 2023 crude prevalence estimates, and the analysis included the two main measures of interest: adult obesity prevalence and no leisure-time physical activity prevalence. The data were organized so that each county had one value for each measure, and counties with missing values for either variable were excluded. A median-based high/low physical inactivity group was also created for descriptive comparison. After cleaning, the final analytic sample included 815 counties.
+
+## Variables
+
+The main outcome variable was adult obesity prevalence. This was measured using the CDC PLACES measure `"Obesity among adults"`. The value used in the analysis was the crude prevalence estimate, reported as a percentage.
+
+The main explanatory variable was physical inactivity prevalence. This was measured using the CDC PLACES measure `"No leisure-time physical activity among adults"`. The value used in the analysis was also the crude prevalence estimate, reported as a percentage.
+
+A categorical grouping variable was also created for descriptive comparison. Counties were classified into `"High Inactivity"` and `"Low Inactivity"` groups based on whether their physical inactivity prevalence was above or below the median value in the analytic sample.
+
+The analysis was restricted to observations from year 2023 and to estimates where `Data_Value_Type == "Crude prevalence"`.
+
+## Statistical Analyses
+
+To examine the county-level association between physical inactivity and adult obesity prevalence, this report used descriptive statistics, data visualization, and simple linear regression. Adult obesity prevalence was treated as the outcome variable, and physical inactivity prevalence was treated as the main explanatory variable. Both variables were measured as crude prevalence percentages.
+
+Exploratory analyses were first used to describe the distribution of the main variables. A histogram was created to show the distribution of adult obesity prevalence across counties, and scatterplots were used to visualize the relationship between obesity prevalence and physical inactivity. For descriptive comparison, counties were also classified into “High Inactivity” and “Low Inactivity” groups based on the median physical inactivity prevalence. Mean, standard deviation, median, minimum, and maximum obesity prevalence were calculated for each group, and a boxplot was used to compare their distributions.
+
+A simple linear regression model was then fitted to formally assess whether physical inactivity prevalence was associated with obesity prevalence. This method was appropriate because both variables were continuous percentages and the research question focused on the direction and strength of their association. The regression coefficient, standard error, 95% confidence interval, p-value, R-squared, and adjusted R-squared were reported.
+
+Model assumptions were assessed using diagnostic plots. A residuals-versus-fitted plot was used to evaluate linearity and homoscedasticity, and a Q-Q plot was used to visually assess residual normality. Because the analysis included one primary regression model, no multiple testing correction was applied. Post-hoc tests were not used because the analysis did not involve an omnibus comparison across three or more groups.
+
+A supplemental simulation analysis was also conducted to explore how effect size, sample size, and random noise may influence the clarity of observed associations. This simulation was used only to support interpretation of statistical variability and uncertainty, not as a replacement for the main regression analysis.
+
+## Reproducibility
+
+All code and the sample data used for this report are available in the GitHub repository:
+
+https://github.com/Irene-sjc/R-project
+
+The repository includes the sample dataset, R scripts, and output figures needed to reproduce the analysis. The full CDC PLACES 2025 dataset is not included because of file size limitations.
+
+The related Shiny app is available here:
+
+https://irene-sjc.shinyapps.io/ObesityExplorer/
+
+# Results
+
+## Descriptive Statistics
+
+```{r descriptive-statistics}
+summary_table <- data.frame(
+  Variable = c(
+    "Adult obesity prevalence (%)",
+    "Physical inactivity prevalence (%)"
+  ),
+  N = c(
+    nrow(selected),
+    nrow(selected)
+  ),
+  Mean = c(
+    mean(selected$Obesity, na.rm = TRUE),
+    mean(selected$Physical_Inactivity, na.rm = TRUE)
+  ),
+  SD = c(
+    sd(selected$Obesity, na.rm = TRUE),
+    sd(selected$Physical_Inactivity, na.rm = TRUE)
+  ),
+  Median = c(
+    median(selected$Obesity, na.rm = TRUE),
+    median(selected$Physical_Inactivity, na.rm = TRUE)
+  ),
+  Min = c(
+    min(selected$Obesity, na.rm = TRUE),
+    min(selected$Physical_Inactivity, na.rm = TRUE)
+  ),
+  Max = c(
+    max(selected$Obesity, na.rm = TRUE),
+    max(selected$Physical_Inactivity, na.rm = TRUE)
+  )
+)
+
+kable(
+  summary_table,
+  digits = 2,
+  caption = "Descriptive statistics for adult obesity and physical inactivity prevalence."
+)
+```
+
+The final analytic sample included `r nrow(selected)` counties. Adult obesity prevalence ranged from `r round(min(selected$Obesity, na.rm = TRUE), 1)`% to `r round(max(selected$Obesity, na.rm = TRUE), 1)`%, with a mean of `r round(mean(selected$Obesity, na.rm = TRUE), 1)`% and a median of `r round(median(selected$Obesity, na.rm = TRUE), 1)`%. Physical inactivity prevalence ranged from `r round(min(selected$Physical_Inactivity, na.rm = TRUE), 1)`% to `r round(max(selected$Physical_Inactivity, na.rm = TRUE), 1)`%, with a mean of `r round(mean(selected$Physical_Inactivity, na.rm = TRUE), 1)`% and a median of `r round(median(selected$Physical_Inactivity, na.rm = TRUE), 1)`%.
+
+These descriptive results show that both obesity prevalence and physical inactivity prevalence varied across counties, which supports further examination of their association.
+
+## Distribution of Adult Obesity Prevalence
+
+```{r obesity-histogram, fig.cap="Distribution of adult obesity prevalence across counties."}
+mean_val <- mean(selected$Obesity, na.rm = TRUE)
+median_val <- median(selected$Obesity, na.rm = TRUE)
+
+ggplot(selected, aes(x = Obesity)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  geom_vline(aes(xintercept = mean_val, color = "Mean"), linewidth = 1) +
+  geom_vline(aes(xintercept = median_val, color = "Median"), linewidth = 1, linetype = "dashed") +
+  scale_color_manual(values = c("Mean" = "red", "Median" = "black")) +
+  labs(
+    title = "Distribution of Obesity among Adults Across Counties",
+    x = "Prevalence (%)",
+    y = "Number of Counties",
+    color = "",
+    caption = "Histogram of county-level obesity estimates from CDC PLACES."
+  ) +
+  theme_minimal()
+```
+
+The histogram shows the distribution of adult obesity prevalence across counties. Most counties had obesity prevalence concentrated in the middle of the distribution, with fewer counties at the lowest and highest values. The mean and median were relatively close, suggesting that the distribution was not strongly skewed.
+
+## Obesity Prevalence by Physical Inactivity Group
+
+```{r grouped-summary}
+group_summary <- selected %>%
+  group_by(Inactivity_Group) %>%
+  summarise(
+    N = n(),
+    Mean_Obesity = mean(Obesity, na.rm = TRUE),
+    SD = sd(Obesity, na.rm = TRUE),
+    Median = median(Obesity, na.rm = TRUE),
+    Min = min(Obesity, na.rm = TRUE),
+    Max = max(Obesity, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+kable(
+  group_summary,
+  digits = 2,
+  col.names = c(
+    "Inactivity group",
+    "N",
+    "Mean obesity",
+    "SD",
+    "Median",
+    "Min",
+    "Max"
+  ),
+  caption = "Adult obesity prevalence by physical inactivity group."
+)
+```
+
+```{r boxplot, fig.cap="Adult obesity prevalence by physical inactivity group."}
+ggplot(selected, aes(x = Inactivity_Group, y = Obesity)) +
+  geom_boxplot(fill = "steelblue") +
+  labs(
+    title = "Obesity Prevalence by Physical Inactivity Group",
+    x = "Physical Inactivity Group",
+    y = "Obesity Prevalence (%)"
+  ) +
+  theme_minimal()
+```
+
+The mean obesity prevalence was `r round(group_summary$Mean_Obesity[group_summary$Inactivity_Group == "High Inactivity"], 1)`% in the high inactivity group and `r round(group_summary$Mean_Obesity[group_summary$Inactivity_Group == "Low Inactivity"], 1)`% in the low inactivity group. The boxplot also suggests that the distribution of obesity prevalence was generally shifted upward in the high inactivity group, although the two groups still showed some overlap. This descriptive comparison supports the pattern that counties with higher physical inactivity tended to have higher obesity prevalence.
+
+## Association Between Physical Inactivity and Obesity
+
+```{r scatterplot, fig.cap="Scatterplot of physical inactivity and adult obesity prevalence with fitted linear regression line across counties."}
+ggplot(selected, aes(x = Physical_Inactivity, y = Obesity)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(
+    title = "Association Between Physical Inactivity and Obesity",
+    x = "Physical Inactivity (%)",
+    y = "Obesity (%)"
+  ) +
+  theme_minimal()
+```
+
+The scatterplot shows a positive association between physical inactivity and adult obesity prevalence. Each point represents one county, and the red fitted linear regression line summarizes the overall trend. The upward slope of the regression line indicates that counties with higher physical inactivity prevalence tend to have higher adult obesity prevalence. Although there is some variation among counties, the overall pattern supports a positive linear relationship between the two variables.
+
+## Linear Regression Results
+
+```{r linear-regression}
+model <- lm(Obesity ~ Physical_Inactivity, data = selected)
+
+model_summary <- summary(model)
+coef_table <- summary(model)$coefficients
+conf_int <- confint(model)
+
+p_value_formatted <- ifelse(
+  coef_table[, "Pr(>|t|)"] < 0.001,
+  "<0.001",
+  as.character(round(coef_table[, "Pr(>|t|)"], 3))
+)
+
+ci_formatted <- paste0(
+  round(conf_int[, 1], 3),
+  " to ",
+  round(conf_int[, 2], 3)
+)
+
+regression_results <- data.frame(
+  Term = c("Intercept", "Physical inactivity"),
+  Estimate = round(coef_table[, "Estimate"], 3),
+  `Standard error` = round(coef_table[, "Std. Error"], 3),
+  `95% CI` = ci_formatted,
+  `p-value` = p_value_formatted,
+  row.names = NULL,
+  check.names = FALSE
+)
+
+kable(
+  regression_results,
+  caption = "Linear regression results for adult obesity prevalence predicted by physical inactivity."
+)
+
+r_squared <- model_summary$r.squared
+adj_r_squared <- model_summary$adj.r.squared
+slope <- coef(model)[2]
+p_value <- coef_table[2, "Pr(>|t|)"]
+
+p_text <- ifelse(
+  p_value < 0.001,
+  "<0.001",
+  as.character(round(p_value, 3))
+)
+```
+
+The linear regression analysis showed a statistically significant positive association between physical inactivity and adult obesity prevalence. The estimated coefficient for physical inactivity was `r round(slope, 3)`, indicating that a one-percentage-point increase in physical inactivity prevalence was associated with an approximately `r round(slope, 2)` percentage-point increase in adult obesity prevalence.
+
+The 95% confidence interval for this coefficient was `r round(conf_int[2, 1], 3)` to `r round(conf_int[2, 2], 3)`, and the p-value was `r p_text`. The model explained a large proportion of the variation in obesity prevalence, with an R-squared value of `r round(r_squared, 3)` and an adjusted R-squared value of `r round(adj_r_squared, 3)`.
+
+Overall, these results suggest that counties with higher levels of physical inactivity also tend to have higher levels of adult obesity. However, because this analysis used cross-sectional county-level data, the result should be interpreted as an association rather than evidence of causation.
+
+## Model Diagnostics
+
+```{r residual-plot, fig.cap="Residual plot for the linear regression model."}
+ggplot(
+  data.frame(
+    Fitted = fitted(model),
+    Residuals = resid(model)
+  ),
+  aes(x = Fitted, y = Residuals)
+) +
+  geom_point(alpha = 0.4) +
+  geom_hline(yintercept = 0, color = "red") +
+  labs(
+    title = "Residual Plot",
+    x = "Fitted Values",
+    y = "Residuals"
+  ) +
+  theme_minimal()
+```
+
+```{r qq-plot, fig.cap="Q-Q plot of residuals from the linear regression model."}
+qqnorm(
+  resid(model),
+  main = "Q-Q Plot of Regression Residuals",
+  xlab = "Theoretical Quantiles",
+  ylab = "Sample Quantiles"
+)
+qqline(
+  resid(model),
+  col = "red"
+)
+```
+
+The residual plot shows that the residuals were generally scattered around zero without a strong curved pattern or clear funnel shape. This suggests that the assumptions of linearity and constant variance were reasonably met.
+
+The Q-Q plot was used to visually assess whether the regression residuals were approximately normally distributed. Most points followed the reference line, suggesting that the normality assumption was generally reasonable. However, some points deviated from the line at the tails, indicating possible outlying residuals. Therefore, the diagnostic results should be interpreted with some caution.
+
+## Supplemental Simulation Analysis
+
+```{r simulation}
+set.seed(123)
+
+simulate_data <- function(effect_size, noise_sd, sample_size) {
+  X <- rnorm(
+    sample_size,
+    mean = mean(selected$Physical_Inactivity, na.rm = TRUE),
+    sd = sd(selected$Physical_Inactivity, na.rm = TRUE)
+  )
+  
+  epsilon <- rnorm(sample_size, mean = 0, sd = noise_sd)
+  Y <- effect_size * X + 10 + epsilon
+  
+  sim_data <- data.frame(
+    Physical_Inactivity = X,
+    Obesity = Y
+  )
+  
+  summary_stats <- sim_data %>%
+    mutate(
+      Obesity_Group = ifelse(
+        Obesity > median(Obesity),
+        "High_Obesity",
+        "Low_Obesity"
+      )
+    ) %>%
+    group_by(Obesity_Group) %>%
+    summarise(
+      Q1_Inactivity = quantile(Physical_Inactivity, 0.25),
+      Median_Inactivity = median(Physical_Inactivity),
+      Q3_Inactivity = quantile(Physical_Inactivity, 0.75),
+      Mean_Inactivity = mean(Physical_Inactivity),
+      .groups = "drop"
+    )
+  
+  return(list(data = sim_data, summary = summary_stats))
+}
+
+actual_n <- nrow(selected)
+
+effect_sizes <- seq(0.1, 1, length.out = 10)
+sample_sizes <- unique(round(seq(100, actual_n, length.out = 10)))
+noise_levels <- c(2, 5, 10)
+
+param_grid <- expand.grid(
+  effect_size = effect_sizes,
+  sample_size = sample_sizes,
+  noise_level = noise_levels
+)
+
+results <- vector("list", nrow(param_grid))
+
+for (i in 1:nrow(param_grid)) {
+  sim <- simulate_data(
+    effect_size = param_grid$effect_size[i],
+    noise_sd = param_grid$noise_level[i],
+    sample_size = param_grid$sample_size[i]
+  )
+  
+  results[[i]] <- list(
+    parameters = param_grid[i, ],
+    simulated_data = sim$data,
+    summary_stats = sim$summary
+  )
+}
+
+combined_summary <- do.call(
+  rbind,
+  lapply(results, function(res) {
+    high <- res$summary %>%
+      filter(Obesity_Group == "High_Obesity") %>%
+      pull(Mean_Inactivity)
+    
+    low <- res$summary %>%
+      filter(Obesity_Group == "Low_Obesity") %>%
+      pull(Mean_Inactivity)
+    
+    data.frame(
+      effect_size = res$parameters$effect_size,
+      sample_size = res$parameters$sample_size,
+      noise_level = res$parameters$noise_level,
+      Mean_Difference = high - low
+    )
+  })
+)
+```
+
+```{r simulation-heatmap, fig.cap="Mean difference in physical inactivity between obesity groups under different simulation conditions."}
+ggplot(combined_summary,
+       aes(x = sample_size,
+           y = effect_size,
+           fill = Mean_Difference)) +
+  geom_tile() +
+  facet_wrap(~noise_level) +
+  labs(
+    title = "Mean Difference in Physical Inactivity Between Obesity Groups",
+    x = "Sample Size",
+    y = "Effect Size",
+    fill = "Mean Difference"
+  ) +
+  scale_fill_gradient(low = "white", high = "darkred")
+```
+
+The simulation results show that the mean difference in physical inactivity between high and low obesity groups generally increased as the effect size increased. Higher noise levels reduced the magnitude and clarity of this difference, while larger sample sizes made the pattern more stable across scenarios. These findings illustrate that stronger associations are easier to observe, whereas greater random variability can make associations less clear.
+
+# Conclusions
+
+This report examined the county-level association between adult physical inactivity prevalence and adult obesity prevalence using a sample from the CDC PLACES 2025 dataset. Overall, the results showed a positive association: counties with higher physical inactivity prevalence generally had higher adult obesity prevalence. This pattern was supported by the descriptive comparison, scatterplot, and simple linear regression model.
+
+The regression results suggested that physical inactivity was meaningfully associated with county-level obesity prevalence. However, these findings should be interpreted carefully. Because the analysis used cross-sectional, county-level aggregated data, the results cannot be used to make individual-level conclusions or causal claims. In addition, the model included only one explanatory variable and did not adjust for potential confounders such as income, food environment, transportation access, built environment, age distribution, or health care access.
+
+In conclusion, physical inactivity appears to be an important factor to consider when studying county-level obesity patterns, but it should not be viewed as the only explanation. Future analyses could strengthen this work by using the full CDC PLACES dataset, including additional county-level predictors, and fitting multivariable regression models to better understand how physical inactivity and other social and environmental factors are jointly associated with obesity prevalence.
+
+# References
+
+<div id="refs"></div>
+
+# AI Use Disclosure Statement
+
+Yes. This document was generated with assistance from ChatGPT, which was used to help debug and improve code written by the author. The primary code and analysis were completed by the author.
