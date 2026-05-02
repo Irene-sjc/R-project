@@ -54,6 +54,32 @@ The scripts use the sample dataset in `data/raw/` and generate outputs in `outpu
 
 ---
 
+## 💻 Shiny App
+
+An interactive Shiny app has been developed to visualize and explore county-level obesity and physical inactivity patterns using the CDC PLACES sample dataset.
+
+🔗 **Live App:** https://irene-sjc.shinyapps.io/ObesityExplorer/
+
+### App Features
+
+The app allows users to explore obesity-related patterns across U.S. counties. Main features include:
+
+- **Overview** – Provides a brief introduction to the project and data source.
+- **Data Explorer** – Allows users to explore county-level obesity and physical inactivity patterns through interactive visualizations.
+- **Interactive Filters** – Users can filter or select variables to better understand differences across counties.
+- **Visual Outputs** – Displays plots related to obesity prevalence, physical inactivity, and county-level comparisons.
+- **Reproducibility Links** – Includes links to the GitHub repository and data source.
+
+### Running the App Locally
+
+```r
+shiny::runApp("Shiny app")
+```
+
+The app uses the sample dataset stored in the `Shiny app/` folder.
+
+---
+
 ## 🗂️ Repository Structure
 
 ```text
