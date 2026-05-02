@@ -49,33 +49,33 @@ To maintain clarity and reproducibility, only one consistent set of figures (gen
 
 ## 🗂️ Repository Structure
 
+```text
 R-project/
-│
 ├── data/
-│   └── raw/
-│       └── PLACES_sample.csv
+│   └── raw/                         # Sample CDC PLACES dataset
 │
 ├── scripts/
-│   ├── Data_exploration.R
-│   ├── Analysis.R
-│   └── Simulation.R
+│   ├── Data_exploration.R            # CP02 exploratory data analysis
+│   ├── Analysis.R                    # CP03 comparative analysis
+│   └── Simulation.R                  # CP04 simulation study
 │
 ├── output/
-│   ├── figures/
-│   └── reports/
+│   ├── figures/                      # Generated figures and visualizations
+│   └── reports/                      # PDF reports for CP02–CP04
 │
 ├── Shiny app/
-│   ├── app.R
-│   └── PLACES_sample_shinyapp.csv
+│   ├── app.R                         # Main Shiny application
+│   └── PLACES_sample_shinyapp.csv    # Sample dataset used for the Shiny app
 │
 ├── Check Point 06/
-│   ├── VTPEH6270-CP06.Rmd
-│   ├── VTPEH6270--CP06.pdf
-│   └── references.bib
+│   ├── VTPEH6270-CP06.Rmd            # CP06 R Markdown file
+│   ├── VTPEH6270--CP06.pdf           # CP06 final PDF report
+│   └── references.bib                # Bibliography file
 │
-├── README.md
-├── .gitignore
-└── R-project.Rproj
+├── README.md                         # Project overview and usage instructions
+├── .gitignore                        # Files excluded from Git tracking
+└── R-project.Rproj                   # RStudio project file
+```
 
 ---
 
