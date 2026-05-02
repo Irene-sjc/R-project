@@ -25,13 +25,10 @@ Email: js3875@cornell.edu
 
 ---
 
-## 📚 Data Source and Description
-The dataset used in this project is:
+## 📚 Data Source
 
-CDC PLACES: Local Data for Better Health, County Data (2025 Release)  
-https://data.cdc.gov/500-Cities-Places/PLACES-Local-Data-for-Better-Health-County-Data-20/swc5-untb/about_data  
-
-This dataset provides model-based estimates of health outcomes, prevention measures, and risk factors for U.S. adults aged 18 years and older at the county level. The estimates are primarily derived from the Behavioral Risk Factor Surveillance System (BRFSS) and statistical modeling.
+Data were obtained from the CDC PLACES: Local Data for Better Health, County Data 2025 release. The dataset provides county-level estimates of health outcomes and risk factors for U.S. adults.  
+https://data.cdc.gov/500-Cities-Places/PLACES-Local-Data-for-Better-Health-County-Data-20/swc5-untb/about_data
 
 ---
 
