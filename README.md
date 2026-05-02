@@ -101,13 +101,13 @@ This repository includes:
 ### 📑 Reports
 
 - **CP02 – Exploratory Data Analysis**  
-  [View Report](./output/reports/CP02_report.pdf)
+  [View Report](./output/reports/CP02_data_exploration_report.pdf)
 
 - **CP03 – Comparative Analysis**  
-  [View Report](./output/reports/CP03_report.pdf)
+  [View Report](./output/reports/CP03_analysis_report.pdf)
 
 - **CP04 – Simulation Study**  
-  [View Report](./output/reports/CP04_report.pdf)
+  [View Report](./output/reports/CP04_simulation_report.pdf)
   
 ---
 
