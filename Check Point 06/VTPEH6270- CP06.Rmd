@@ -1,0 +1,207 @@
+---
+title: "VTPEH 6270 - Check Point 06"
+author: "Jinchan Sun"
+date: "`r Sys.Date()`"
+editor_options:
+  chunk_output_type: console
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    number_sections: true
+bibliography: references.bib
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Introduction
+
+This report explores county-level health indicators using the CDC PLACES 2025 dataset. The dataset includes health outcomes, prevention measures, and risk factors across U.S. counties. Due to file size limitations, a reduced sample of the original dataset (PLACES_sample.csv) is used for all analyses to ensure reproducibility of the results. The goal of this report is to explore potential associations between selected health indicators and demographic or behavioral characteristics at the county level, using county-level aggregated data.
+
+## Research Question
+
+Is adult obesity prevalence associated with physical inactivity at the county level?
+
+## Scientific Plausibility and Context
+
+Physical inactivity is widely recognized as a major public health concern. Global health authorities identify insufficient physical activity as an important risk factor for non-communicable diseases, including obesity [@WHO2024PhysicalActivity]. A recent systematic review reported consistent evidence that sedentary behavior and low physical activity are associated with increased abdominal obesity and overall adiposity in adults [@Silveira2022Sedentary]. Earlier research has further suggested a possible vicious cycle, in which physical inactivity contributes to weight gain, and increased body weight may in turn reduce physical activity levels over time [@Pietilainen2007PhysicalInactivity].
+
+Based on existing literature, we expect that higher levels of physical inactivity will be positively associated with higher adult obesity prevalence at the county level. This analysis focuses on examining associations rather than causal relationships. County-level analysis allows us to identify geographic patterns and inform local public health interventions.
+
+# Material & Methods
+
+## Data
+
+The data used in this analysis come from the CDC PLACES 2025 dataset, which provides model-based estimates of health outcomes, prevention measures, and risk factors at the county level across the United States. The dataset is publicly available from the CDC data portal:
+https://data.cdc.gov/500-Cities-Places/PLACES-Local-Data-for-Better-Health-County-Data-20/swc5-untb/about_data
+
+PLACES data are derived using small-area estimation methods based on the Behavioral Risk Factor Surveillance System (BRFSS) and U.S. Census data, allowing for consistent health estimates across all U.S. counties.
+
+Due to file size limitations, a reduced sample of the dataset (PLACES_sample.csv) was used for all analyses to ensure reproducibility. This sample dataset retains the key variables of interest, including adult obesity prevalence and physical inactivity.
+
+Before analysis, the dataset was inspected and cleaned as needed. Relevant variables were selected, and observations with missing values for the variables of interest were removed. No additional transformations were applied.
+
+## Statistical Analyses
+
+To examine the association between physical inactivity and adult obesity prevalence at the county level, a combination of exploratory, descriptive, and inferential statistical approaches was used.
+
+First, exploratory data analysis was conducted to understand the distribution of key variables. Scatterplots were generated to visualize relationships between obesity prevalence and other variables, including total population and physical inactivity.
+
+Next, descriptive analyses were performed to compare obesity prevalence across different levels of physical inactivity. Counties were categorized into “high” and “low” physical inactivity groups based on the median value of physical inactivity. Summary statistics, including mean, standard deviation, and median obesity prevalence, were calculated for each group. A boxplot was used to visualize differences between these groups.
+
+To formally assess the association between physical inactivity and obesity prevalence, a linear regression model was fitted, with obesity prevalence as the outcome variable and physical inactivity as the explanatory variable. A scatterplot with a fitted regression line was used to visualize this relationship.
+
+Model assumptions were evaluated using diagnostic methods. Linearity and homoscedasticity were assessed using a residual plot, where residuals were plotted against fitted values. The distribution of residuals was visually inspected to assess normality.
+
+In addition, a simulation analysis was conducted to explore how effect size, sample size, and variability influence the observed association between physical inactivity and obesity. Synthetic datasets were generated under varying conditions, and summary statistics were compared across simulated scenarios. A heatmap was used to visualize how these parameters affected differences in physical inactivity between obesity groups.
+
+## Code
+
+All code used for data cleaning, visualization, and statistical analysis is available in the following GitHub repository:
+
+https://github.com/Irene-sjc/R-project
+
+The repository contains the R scripts used in this project, the sample dataset used for reproducible analyses, and the output figures generated from the code. Due to file size limitations, the full CDC PLACES 2025 dataset is not included in the repository. Instead, a reduced sample dataset is provided so that the analysis can be reproduced on any machine.
+
+# Results
+
+```{r, results='hide'}
+
+# Load package
+library(here)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# Load data
+data <- read.csv(here("data", "raw", "PLACES_sample.csv"), stringsAsFactors = FALSE)
+
+# Make sure key columns are usable
+data$Data_Value <- suppressWarnings(as.numeric(data$Data_Value))
+data$Year <- suppressWarnings(as.numeric(data$Year))
+
+# Filter data
+data_clean <- data %>%
+  filter(
+    Data_Value_Type == "Crude prevalence",
+    Year == 2023
+  )
+
+# Keep only the two measures needed
+selected_long <- data_clean %>%
+  filter(Measure %in% c(
+    "No leisure-time physical activity among adults",
+    "Obesity among adults"
+  )) %>%
+  select(LocationName, Measure, Data_Value)
+
+# Convert to wide format
+selected <- selected_long %>%
+  pivot_wider(
+    names_from = Measure,
+    values_from = Data_Value,
+    values_fn = mean
+  ) %>%
+  rename(
+    County = LocationName,
+    Physical_Inactivity = `No leisure-time physical activity among adults`,
+    Obesity = `Obesity among adults`
+  ) %>%
+  drop_na()
+
+# Create high/low inactivity group
+median_inactivity <- median(selected$Physical_Inactivity, na.rm = TRUE)
+
+selected <- selected %>%
+  mutate(
+    Inactivity_Group = ifelse(
+      Physical_Inactivity > median_inactivity,
+      "High Inactivity",
+      "Low Inactivity"
+    )
+  )
+
+# Fit model
+model <- lm(Obesity ~ Physical_Inactivity, data = selected)
+```
+
+## Visualization
+
+Figure 1 shows the association between physical inactivity and obesity prevalence across counties.
+```{r}
+
+ggplot(selected, aes(x = Physical_Inactivity, y = Obesity)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(
+    x = "Physical inactivity (%)",
+    y = "Obesity prevalence (%)"
+  ) +
+  theme_minimal()
+```
+Figure 1 shows a clear positive relationship between physical inactivity and adult obesity prevalence. Counties with lower physical inactivity generally have lower obesity prevalence, while counties with higher physical inactivity tend to have higher obesity prevalence. The upward-sloping regression line supports the expectation that physical inactivity is positively associated with obesity at the county level.
+
+Figure 2 compares obesity prevalence between counties with high and low levels of physical inactivity.
+```{r}
+ggplot(selected, aes(x = Inactivity_Group, y = Obesity)) +
+  geom_boxplot(fill = "steelblue") +
+  labs(
+    x = "Physical inactivity group",
+    y = "Obesity prevalence (%)"
+  ) +
+  theme_minimal()
+```
+Figure 2 shows that counties in the high physical inactivity group generally have higher obesity prevalence than counties in the low physical inactivity group. The median obesity prevalence appears higher in the high inactivity group, and the overall distribution is shifted upward. This supports the descriptive finding that obesity prevalence differs by physical inactivity level.
+
+## Statistical Analyses
+
+Counties in the high physical inactivity group generally show higher obesity prevalence compared to those in the low inactivity group.
+```{r}
+
+summary(model)
+```
+The linear regression analysis showed a statistically significant positive association between physical inactivity and obesity prevalence. The estimated coefficient for physical inactivity was 0.745 (p < 0.001), indicating that a one-percentage-point increase in physical inactivity was associated with an approximately 0.745 percentage-point increase in obesity prevalence at the county level. The model explained a relatively large proportion of the variation in obesity prevalence (R² = 0.700). Overall, these results suggest that counties with higher levels of physical inactivity tend to have higher levels of adult obesity prevalence.
+
+Figure 3 presents the residual plot used to assess model assumptions.
+```{r}
+
+ggplot(
+  data.frame(
+    Fitted = fitted(model),
+    Residuals = resid(model)
+  ),
+  aes(x = Fitted, y = Residuals)
+) +
+  geom_point(alpha = 0.4) +
+  geom_hline(yintercept = 0, color = "red") +
+  labs(
+    x = "Fitted values",
+    y = "Residuals"
+  ) +
+  theme_minimal()
+```
+Figure 3 shows that the residuals are generally centered around zero, with no strong systematic pattern across the fitted values. This suggests that the linearity assumption is reasonably appropriate. However, a few outlying residuals are present, so the diagnostic plot should be interpreted cautiously.
+
+Overall, the findings support a positive association between physical inactivity and adult obesity prevalence. As the analysis is based on observational county-level data, the results should be interpreted as associations rather than causal relationships.
+
+# Conclusions
+
+The results of this analysis are consistent with the expectations outlined in the introduction and with findings from existing literature. A positive association between physical inactivity and adult obesity prevalence was observed across counties. Both the scatterplot and the linear regression model showed that counties with higher physical inactivity tended to have higher obesity prevalence.
+
+The regression results further showed that each one-percentage-point increase in physical inactivity was associated with an approximately 0.745 percentage-point increase in adult obesity prevalence. The model explained a substantial proportion of the variation in obesity prevalence, suggesting that physical inactivity is an important county-level correlate of obesity.
+
+However, this analysis has several limitations. The data are aggregated at the county level and are based on modeled estimates, so the results may not reflect individual-level relationships. In addition, the cross-sectional design does not allow causal conclusions, and other factors such as income, food access, education, and built environment may also influence obesity prevalence.
+
+Overall, the findings suggest that promoting physical activity may be an important component of population-level obesity prevention strategies. Future research could include additional social and environmental variables or use longitudinal data to better understand the mechanisms underlying this relationship.
+
+# References
+
+<div id="refs"></div>
+
+# AI Use Disclosure Statement
+
+Yes. This document was generated with assistance from ChatGPT, which was used to help debug and improve code written by the author. The primary code and analysis were completed by the author.
